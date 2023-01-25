@@ -21,7 +21,19 @@ try:
 except subprocess.CalledProcessError as e:
     print("Command failed with return code:", e.returncode)
 
-
+import shutil
 if os.path.exists("setup.py"):
     os.remove("setup.py")
+    print("setup.py has been removed")
+    print('---------------------')
+if os.path.exists('build'):
+    shutil.rmtree('build')
+    print("build has been removed")
+    print('---------------------')
+cfile = [f for f in os.listdir(path) if f.endswith('.c')]
+for f in cfile:
+    os.remove(f"{path}/{f}")
+    print(f"{f} has been removed")
+    print('---------------------')
+print("All done!")
 # call python quickstart.py
