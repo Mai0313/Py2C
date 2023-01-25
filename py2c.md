@@ -28,10 +28,12 @@ python start.py
 ```
 - It will do the same thing as the second option, but it will do it automatically
     - Note: All .py file inside py2c will be converted to C, so make sure those files are the files you want to convert
-
+- Everything is done, just import your function!
 ---
 
-### Second is using Cython
+### Second Option is Doing it Manually
+
+- Replace 'main.py' below with your python file name
 
 ```python
 from distutils.core import setup
@@ -44,8 +46,7 @@ setup(
 # ext_modules = cythonize(["main.py", "main2.py"])
 ```
 
-- Make sure your function.py is exists, here is an example of main.py
-
+- Below is an example function in main.py
 ```python
 def main():
     for i in range(1,10):
@@ -54,13 +55,14 @@ def main():
             break
 ```
 
-- Last, run the following command
+- Run command shown below
 
 ```shell
 python setup.py build_ext --inplace
 ```
 
-- You will see serveral files generated
+- After you finished those process, You will see serveral files generated
+
 ```
 folder
 ├── main.c
