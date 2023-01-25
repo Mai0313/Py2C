@@ -9,7 +9,7 @@
 ```python
 pip install cython
 ```
-
+![image](pic\install_cython.png)
 - Make sure if you have a C compiler installed on your computer
 
     - https://visualstudio.microsoft.com/zh-hant/visual-cpp-build-tools/
@@ -28,9 +28,15 @@ pip install cython
 ```shell
 python start.py
 ```
-- It will do the same thing as the second option, but it will do it automatically
-    - Note: All .py file inside py2c will be converted to C, so make sure those files are the files you want to convert
-- Everything is done, just import your function!
+![Alt text](pic\option_1.png)
+- Same result with the second option
+- For this method, you will only see two pyd files in current folder like this
+![image](pic\option_1_result.png)
+- Everything is done, just import your function! by
+```
+import main
+main.main()
+```
 ---
 
 ### Second Option is Doing it Manually
