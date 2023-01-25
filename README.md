@@ -1,5 +1,7 @@
 # Python to C by Cython
 
+![image](pic\Cython-logo.svg.png)
+
 ### Before You Start...
 
 - Install Cython
