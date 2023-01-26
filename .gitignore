@@ -1,3 +1,4 @@
 *.pyd
 *.ipynb
 /py2c/*.py
+**/__pycache*
