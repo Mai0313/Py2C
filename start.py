@@ -53,7 +53,7 @@ class Py2CCompiler:
         self.get_python_files()
         self.write_setup_file()
         self.compile_files()
-        self.remove_files()
+        self.remove_files() 
 
 if __name__ == '__main__':
     compiler = Py2CCompiler()
