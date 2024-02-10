@@ -1,62 +1,40 @@
 import os
 import shutil
-import subprocess
+
+from pydantic import Field, FilePath, BaseModel, model_validator
+from setuptools import setup
+from Cython.Build import cythonize
 
 
-class Py2CCompiler:
-    def __init__(self, path="py2c"):
-        self.path = path
-        self.filename = []
-        self.file_paths = []
+class Py2C(BaseModel):
+    input_path: FilePath = Field(
+        ...,
+        title="Python File Path",
+        description="enter the filepath of your python file, better be abs path.",
+        example="/home/mai/Py2C/test.py",
+    )
 
-    def create_directory(self):
-        if not os.path.exists(self.path):
-            os.mkdir(self.path)
+    @model_validator(mode="before")
+    def check_if_no_input(cls, values):
+        if values.get("input_path") is None:
+            raise ValueError("input_path is required")
 
-    def get_python_files(self):
-        self.filename = [f for f in os.listdir(self.path) if f.endswith(".py")]
-        self.file_paths = [f"{self.path}/{f}" for f in self.filename]
-
-    def write_setup_file(self):
-        with open("setup.py", "w") as f:
-            f.write("from distutils.core import setup" + "\n")
-            f.write("from Cython.Build import cythonize" + "\n")
-            f.write("" + "\n")
-            f.write("setup(" + "\n")
-            f.write(f"  ext_modules = cythonize({self.file_paths})" + "\n")
-            f.write("   )" + "\n")
-
-    def compile_files(self):
-        try:
-            subprocess.check_call("python setup.py build_ext --inplace", shell=True)
-            print("Command executed successfully!")
-        except subprocess.CalledProcessError as e:
-            print("Command failed with return code:", e.returncode)
-
-    def remove_files(self):
-        if os.path.exists("setup.py"):
-            os.remove("setup.py")
-            print("setup.py has been removed")
-            print("---------------------")
-        if os.path.exists("build"):
-            shutil.rmtree("build")
-            print("build has been removed")
-            print("---------------------")
-        cfile = [f for f in os.listdir(self.path) if f.endswith(".c")]
-        for f in cfile:
-            os.remove(f"{self.path}/{f}")
-            print(f"{f} has been removed")
-            print("---------------------")
-        print("All done!")
-
-    def run(self):
-        self.create_directory()
-        self.get_python_files()
-        self.write_setup_file()
-        self.compile_files()
-        self.remove_files()
+    def py_to_cython(self):
+        root_dir, filename = os.path.split(self.input_path)
+        basename, suffix = os.path.splitext(filename)
+        cython_file_path = f"{root_dir}/{basename}.pyx"
+        with open(self.input_path) as py_file:
+            py_content = py_file.read()
+        with open(cython_file_path, "w") as cython_file:
+            cython_file.write(py_content)
+        setup(
+            ext_modules=cythonize(cython_file_path, language_level="3", build_dir="build"),
+            script_args=["build_ext", "--inplace"],
+        )
+        print(f"{self.input_path} has been compiled to {cython_file_path}")  # noqa: T201
+        os.remove(cython_file_path)
+        shutil.rmtree("build")
 
 
 if __name__ == "__main__":
-    compiler = Py2CCompiler()
-    compiler.run()
+    Py2C(input_path="/home/mai/Py2C/test.py").py_to_cython()
