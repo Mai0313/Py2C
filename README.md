@@ -9,14 +9,16 @@
 ```python
 pip install cython
 ```
+
 ![image](images/install_cython.png)
+
 - Make sure if you have a C compiler installed on your computer
 
-    - https://visualstudio.microsoft.com/zh-hant/visual-cpp-build-tools/
+  - https://visualstudio.microsoft.com/zh-hant/visual-cpp-build-tools/
 
 - Make sure you have setup.py inside the folder
 
----
+______________________________________________________________________
 
 ## From now, here is two options to do this...
 
@@ -28,16 +30,20 @@ pip install cython
 ```shell
 python start.py
 ```
+
 ![Alt text](images/option_1.png)
+
 - Same result with the second option
 - For this method, you will only see two pyd files in current folder like this
-![image](images/option_1_result.png)
+  ![image](images/option_1_result.png)
 - Everything is done, just import your function! by
+
 ```
 import main
 main.main()
 ```
----
+
+______________________________________________________________________
 
 ### Second Option is Doing it Manually
 
@@ -55,6 +61,7 @@ setup(
 ```
 
 - Below is an example function in main.py
+
 ```python
 def main():
     for i in range(1,10):
